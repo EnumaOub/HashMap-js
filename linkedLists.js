@@ -35,13 +35,18 @@ class LinkedList {
     };
 
     size() {
-        let nextVal = this.head;
-        let i = 1;
-        while(nextVal.next != null) {
-            nextVal = nextVal.next;
-            i++;
-        };
-        return i;
+        if (this.head == null) {
+            return 0;
+        }
+        else {
+            let nextVal = this.head;
+            let i = 1;
+            while(nextVal.next != null) {
+                nextVal = nextVal.next;
+                i++;
+            };
+            return i;
+        }
     };
 
     getHead() {
@@ -49,60 +54,92 @@ class LinkedList {
     };
 
     getTail() {
-        let nextVal = this.head;
-        while(nextVal.next != null) {
-            nextVal = nextVal.next;
-        };
-        return nextVal;
+        if (this.head == null) {
+            return "The list is empty";
+        }
+        else {
+            let nextVal = this.head;
+            while(nextVal.next != null) {
+                nextVal = nextVal.next;
+            };
+            return nextVal;
+        }
     };
 
     at(index) {
-        let nextVal = this.head;
-        let i = 0;
-        while(nextVal.next != null && i < index) {
-            nextVal = nextVal.next;
-            i++;
-        };
-        return nextVal;
+        if (this.head == null) {
+            return "The list is empty";
+        }
+        else {  
+            let nextVal = this.head;
+            let i = 0;
+            while(nextVal.next != null && i < index) {
+                nextVal = nextVal.next;
+                i++;
+            };
+            return nextVal;
+        }  
     };
 
     pop() {
-        let prevVal = this.head;
-        let nextVal = prevVal.next;
-        while(nextVal.next != null) {
-            prevVal = prevVal.next;
-            nextVal = prevVal.next;
-        };
-        const value = nextVal.value;
-        prevVal.next = null;
-        nextVal.value = null;
-        return value;
+        if (this.head == null) {
+            return "The list is empty";
+        }
+        else if (this.head.next == null) {
+            this.head = null;
+        }
+        else {
+            let prevVal = this.head;
+            let nextVal = prevVal.next;
+            while(nextVal.next != null) {
+                prevVal = prevVal.next;
+                nextVal = prevVal.next;
+            };
+            const value = nextVal.value;
+            prevVal.next = null;
+            nextVal.value = null;
+            return value;
+        }
+        
     };
 
     contains(value) {
-        let nextVal = this.head;
-        let checkVal = nextVal.value === value;
-        while(nextVal.next != null && !(checkVal)) {
-            nextVal = nextVal.next;
-            checkVal = nextVal.value === value;
-        };
-        return checkVal;
+        if (this.head == null) {
+            return false;
+        }
+        else {
+            let nextVal = this.head;
+            let checkVal = nextVal.value === value;
+            while(nextVal.next != null && !(checkVal)) {
+                nextVal = nextVal.next;
+                checkVal = nextVal.value === value;
+            };
+            return checkVal;
+        }
     };
 
     find(value) {
-        let nextVal = this.head;
-        let i = 0;
-        let checkVal = nextVal.value === value;
-        while(nextVal.next != null && !(checkVal)) {
-            nextVal = nextVal.next;
-            checkVal = nextVal.value === value;
-            i++
-        };
-        return checkVal ? i: null;
+        if (this.head == null) {
+            return null;
+        }
+        else {
+            let nextVal = this.head;
+            let i = 0;
+            let checkVal = nextVal.value === value;
+            while(nextVal.next != null && !(checkVal)) {
+                nextVal = nextVal.next;
+                checkVal = nextVal.value === value;
+                i++
+            };
+            return checkVal ? i: null;
+        }
     };
 
     insertAt(value, index) {
-        if (index === 0) {
+        if (this.head == null && index !== 0) {
+            return "The list is empty, please add to first index 0, prepend or append";
+        }
+        else if (index === 0) {
             this.prepend(value)
             return this.head.value
         }
@@ -131,7 +168,7 @@ class LinkedList {
 
     updateLinks(node) {
         let prevVal = node;
-        if (prevVal.next != null) {
+        if (prevVal != null && prevVal.next != null) {
             let nextVal = prevVal.next;
             while(nextVal.next != null) {
                 prevVal = prevVal.next;
@@ -153,7 +190,10 @@ class LinkedList {
     }
 
     removeAt(index) {
-        if (index === 0) {
+        if (this.head == null) {
+            return "The list is empty";
+        }
+        else if (index === 0) {
             const value = this.head .value;
             this.replaceNode(this.head , this.head.next);
             this.updateLinks(this.head);
@@ -183,41 +223,64 @@ class LinkedList {
     }
 
     toString() {
-        let nextVal = this.head;
-        process.stdout.write("( " + nextVal.value + " )");
-        while(nextVal.next != null) {
-            nextVal = nextVal.next;
-            process.stdout.write(" -> ( " + nextVal.value + " )");
-        };
-        process.stdout.write(" -> " + nextVal.next);
-        process.stdout.write("\n");
+        if (this.head == null) {
+            process.stdout.write("The list is empty");
+            process.stdout.write("\n");
+        }
+        else {
+            let nextVal = this.head;
+            process.stdout.write("( " + nextVal.value + " )");
+            while(nextVal.next != null) {
+                nextVal = nextVal.next;
+                process.stdout.write(" -> ( " + nextVal.value + " )");
+            };
+            process.stdout.write(" -> " + nextVal.next);
+            process.stdout.write("\n");
+        }
     };
 };
  
 const lList = new LinkedList();
-lList.prepend("A");
-lList.append("B");
-lList.toString();
-lList.append("C");
-lList.toString();
-lList.prepend("A0");
-lList.toString();
+console.log("TEST EMPTY \n")
+
 console.log(`Size Linked List: ${lList.size()}`);
-console.log(`Head Linked List: ${lList.getHead().value}`);
-console.log(`Tail Linked List: ${lList.getTail().value}`);
-console.log(`At index 1 Linked List: ${lList.at(1).value}`);
-console.log(`At index 2 Linked List: ${lList.at(2).value}`);
+console.log(`Head Linked List: ${lList.getHead()}`);
+console.log(`Tail Linked List: ${lList.getTail()}`);
+console.log(`At index 1 Linked List: ${lList.at(1)}`);
+console.log(`At index 2 Linked List: ${lList.at(2)}`);
 console.log(`Contains "C" Linked List: ${lList.contains("C")}`);
 console.log(`Find "C" Linked List: ${lList.find("C")}`);
-// console.log(`Pop Linked List: ${lList.pop()}`);
-// lList.toString();
-// console.log(`Contains "C" Linked List: ${lList.contains("C")}`);
-// console.log(`Find "C" Linked List: ${lList.find("C")}`);
-// console.log(`Find "A0" Linked List: ${lList.find("A0")}`);
-// console.log(`Pop Linked List: ${lList.pop()}`);
-// lList.toString();
+console.log(`Pop Linked List: ${lList.pop()}`);
+lList.toString();
 
-console.log("\n");
+console.log(`Pop Linked List: ${lList.pop()}`);
+console.log(`removeAt(2)  Linked List: ${lList.removeAt(2)}`);
+console.log(`insertAt("D", 2)  Linked List: ${lList.insertAt("D", 2)}`);
+lList.toString();
+console.log(`removeAt(2)  Linked List: ${lList.removeAt(2)}`);
+lList.toString();
+console.log(`insertAt("F", 0)  Linked List: ${lList.insertAt("F", 0)}`);
+lList.toString();
+console.log(`removeAt(0)  Linked List: ${lList.removeAt(0)}`);
+lList.toString();
+
+console.log("\nPOPULATE")
+console.log(`prepend("A")`);
+lList.prepend("A");
+lList.toString();
+console.log(`append("B")`);
+lList.append("B");
+lList.toString();
+console.log(`append("C")`);
+lList.append("C");
+lList.toString();
+console.log(`prepend("A0")`);
+lList.prepend("A0");
+lList.toString();
+
+
+
+console.log("\nTEST OTHER METHODS");
 
 console.log(`insertAt("D", 2)  Linked List: ${lList.insertAt("D", 2)}`);
 lList.toString();
@@ -255,3 +318,18 @@ console.log(`removeAt(-55)  Linked List: ${lList.removeAt(-55)}`);
 lList.toString();
 console.log("\n");
 
+console.log(`Size Linked List: ${lList.size()}`);
+console.log(`Head Linked List: ${lList.getHead().value}`);
+console.log(`Tail Linked List: ${lList.getTail().value}`);
+console.log(`At index 1 Linked List: ${lList.at(1).value}`);
+console.log(`At index 2 Linked List: ${lList.at(2).value}`);
+console.log(`Contains "C" Linked List: ${lList.contains("C")}`);
+console.log(`Find "C" Linked List: ${lList.find("C")}`);
+
+console.log(`Pop Linked List: ${lList.pop()}`);
+lList.toString();
+console.log(`Contains "C" Linked List: ${lList.contains("C")}`);
+console.log(`Find "C" Linked List: ${lList.find("C")}`);
+console.log(`Find "A0" Linked List: ${lList.find("A0")}`);
+console.log(`Pop Linked List: ${lList.pop()}`);
+lList.toString();
