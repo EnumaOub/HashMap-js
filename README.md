@@ -1,4 +1,4 @@
-# Linked Lists
+# Hash Map
 
 ## Description
-Test some DSA by nuilding a Linked List
+Test some DSA by building a Hash Map
